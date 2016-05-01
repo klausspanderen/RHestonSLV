@@ -1,0 +1,3 @@
+PKG_CPPFLAGS= -Wall
+PKG_LIBS=$(shell "Rscript" -e "Rcpp:::LdFlags()") -lQuantLib -lrt
+
