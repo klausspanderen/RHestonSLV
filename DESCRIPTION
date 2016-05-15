@@ -4,8 +4,7 @@ Title: R Implementation of the Heston Stochastic Local Volatility Model
 Version: 0.1.0
 Author: Klaus Spanderen
 Maintainer: <klaus@spanderen.de>
-Description: The RHestonSLV package makes the implementation of the 
-Heston Stochastic Local Volatility Model within QuantLib accessible from R
+Description: The RHestonSLV package makes the implementation of the Heston Stochastic Local Volatility Model within QuantLib accessible from R
 License: GPL 2.0
 LazyData: TRUE
 Imports:
