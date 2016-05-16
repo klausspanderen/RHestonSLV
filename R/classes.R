@@ -35,7 +35,7 @@ setClass("HestonProcess",
     if (object@sigma < 0)
       return("negative sigma was given.")
     if (object@rho < -1 || object@rho > 1)
-      return("correlation rho must stay between [-1,1}.")
+      return("correlation rho must stay between [-1,1].")
 
     return(TRUE)
   }
@@ -109,7 +109,7 @@ setClass("HestonSLVMCParams",
       qmc=TRUE,
       timeStepsPerYear = 181,
       nBins = 100,
-      calibrationPaths=32768
+      calibrationPaths=32767
   ),
   validity = function(object) {
     if (object@timeStepsPerYear <= 0)
@@ -145,7 +145,7 @@ setMethod(f="[",
     switch(i,
            qmc = { return(x@qmc) },
            timeStepsPerYear = { return(x@timeStepsPerYear) },
-           nBins = { return(x@nBIns) },
+           nBins = { return(x@nBins) },
            calibrationPaths = { return(x@calibrationPaths)   }
     )
   }
@@ -258,6 +258,34 @@ setReplaceMethod(f="[",
   }
 )
 
+setMethod(f="[",
+   signature="HestonSLVFDMParams",
+   definition=function(x, i, j, value) {
+     switch(i,
+            xGrid = { return(x@xGrid) },
+            vGrid = { return(x@vGrid) },
+            tMaxStepsPerYear = { return(x@tMaxStepsPerYear) },
+            tMinStepsPerYear = { return(x@tMinStepsPerYear) },
+            tStepNumberDecay = { return(x@tStepNumberDecay) },
+            predictionCorrectionSteps = { return(x@predictionCorrectionSteps) },
+            x0Density = { return(x@x0Density) },
+            localVolEpsProb = { return(x@localVolEpsProb) },
+            maxIntegrationIterations = { return(x@maxIntegrationIterations) },
+            vLowerEps = { return(x@vLowerEps) },
+            vUpperEps = { return(x@vUpperEps) },
+            vMin = { return(x@vMin) },
+            v0Density = { return(x@v0Density) },
+            vLowerBoundDensity = { return(x@vLowerBoundDensity) },
+            vUpperBoundDensity = { return(x@vUpperBoundDensity) },
+            leverageFctPropEps = { return(x@leverageFctPropEps) },
+            greensAlgorithm = { return(x@greensAlgorithm) },
+            transformationType = { return(x@transformationType) },
+            fdmSchemeType = { return(x@fdmSchemeType) }
+     )
+     validObject(x)
+     return(x)
+   }
+)
 
 setMethod(f="show",
   signature="HestonSLVFDMParams",

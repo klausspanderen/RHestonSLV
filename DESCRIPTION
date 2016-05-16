@@ -4,7 +4,7 @@ Title: R Implementation of the Heston Stochastic Local Volatility Model
 Version: 0.1.0
 Author: Klaus Spanderen
 Maintainer: <klaus@spanderen.de>
-Description: The RHestonSLV package makes the implementation of the Heston Stochastic Local Volatility Model within QuantLib accessible from R
+Description: The RHestonSLV package makes QuantLib's implementation of the Heston Stochastic Local Volatility Model accessible from R. Local Stochastic Volatility (LSV) models have become the industry standard for FX and equity markets. The local volatility extension of the popular Heston stochastic volatility model is a promising candidate within the zoo of LSV models. But the calibration of this model is not only computational demanding but also tricky from an algorithmic point of view, especially if the Feller constraint is violated The two main solutions to tackle the calibration problem are either solving the Fokker-Planck forward equation via finite difference methods or based on efficient Monte-Carlo simulations. Pricing and greek calculations for vanilla and more exotic options are also supported.
 License: GPL 2.0
 LazyData: TRUE
 Imports:

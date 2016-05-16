@@ -49,7 +49,7 @@ slvDoubleBarrierPrices <- function(eta) {
   initialize <- leverageFunction(model, TRUE)(0.1, process["spot"])
 
   sapply(barriers, function(barrier) {
-    hestonSLVDoubleBarrierPricerNoTouchPrice(
+    hestonSLVDoubleNoTouchBarrierPricer(
       Sys.Date(),
       max(0.01, process["spot"] - barrier),
       process["spot"]  + barrier,
@@ -68,14 +68,14 @@ slvDoubleBarrierPrices <- function(eta) {
 
 cl <- makeCluster(detectCores(), "FORK")
 
-#slvPrices <- parSapply(cl=cl, c(1.0, 0.75, 0.5, 0.25, 0.001), function(eta) {
-#  slvDoubleBarrierPrices(eta)
-#})
+slvPrices <- parSapply(cl=cl, c(1.0, 0.75, 0.5, 0.25, 0.001), function(eta) {
+  slvDoubleBarrierPrices(eta)
+})
 
 stopCluster(cl)
 
 bsNPV <- unlist(sapply(barriers, function(barrier) {
-  bsDoubleBarrierPricerNoTouchPrice(
+  bsDoubleNoTouchBarrierPricer(
     Sys.Date(),
     max(0.01, 100 - barrier),
     100  + barrier,

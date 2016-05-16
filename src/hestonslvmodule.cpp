@@ -291,6 +291,7 @@ namespace {
           : (schemeDescStr == "ModifiedHundsdorfer") ? FdmSchemeDesc::ModifiedHundsdorfer()
           : (schemeDescStr == "ImplicitEuler") ? FdmSchemeDesc::ImplicitEuler()
           : (schemeDescStr == "ExplicitEuler") ? FdmSchemeDesc::ExplicitEuler()
+          : (schemeDescStr == "Douglas") ? FdmSchemeDesc::Douglas()
           : (stop("unknown scheme type"), FdmSchemeDesc::ExplicitEuler());
   }
 
@@ -687,7 +688,7 @@ List hestonSLVBarrierPricer(QuantLib::Date referenceDate,
 };
 
 
-List hestonSLVDoubleBarrierPricerNoTouchPrice(
+List hestonSLVDoubleNoTouchBarrierPricer(
     QuantLib::Date referenceDate,
     Real barrier_lo,
     Real barrier_hi,
@@ -719,11 +720,10 @@ List hestonSLVDoubleBarrierPricerNoTouchPrice(
 
   const Real npv = option.NPV();
 
-
   return List::create(Named("value") = npv);
 };
 
-List bsDoubleBarrierPricerNoTouchPrice(
+List bsDoubleNoTouchBarrierPricer(
     QuantLib::Date referenceDate,
     Real barrier_lo,
     Real barrier_hi,
@@ -795,11 +795,11 @@ RCPP_MODULE(HestonSLVModule) {
   ;
 
 
-  function("hestonSLVOptionPricer", &hestonSLVOptionPricer);
+  function("hestonSLVOptionPricer_", &hestonSLVOptionPricer);
   function("hestonSLVForwardOptionPricer", &hestonSLVForwardOptionPricer);
-  function("hestonSLVBarrierPricer", &hestonSLVBarrierPricer);
-  function("hestonSLVDoubleBarrierPricerNoTouchPrice",
-           &hestonSLVDoubleBarrierPricerNoTouchPrice);
-  function("bsDoubleBarrierPricerNoTouchPrice",
-           &bsDoubleBarrierPricerNoTouchPrice);
+  function("hestonSLVBarrierPricer_", &hestonSLVBarrierPricer);
+  function("hestonSLVDoubleNoTouchBarrierPricer_",
+           &hestonSLVDoubleNoTouchBarrierPricer);
+  function("bsDoubleNoTouchBarrierPricer",
+           &bsDoubleNoTouchBarrierPricer);
 }

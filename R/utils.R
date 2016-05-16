@@ -14,6 +14,43 @@
 #  You should have received a copy of the GNU General Public License
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
+# forward function call incl. defaults to rcpp method
+hestonSLVOptionPricer <- function(
+    referenceDate, strike, optionType, exerciseType,
+    maturityDate, hestonProcess, leverageFunction, tGrid=51, xGrid=401,
+    vGrid=51, dampingSteps=0, fdmScheme = "ModifiedCraigSneyd") {
+
+  hestonSLVOptionPricer_(referenceDate, strike, optionType, exerciseType,
+                         maturityDate, hestonProcess, leverageFunction, tGrid, xGrid,
+                         vGrid, dampingSteps, fdmScheme)
+}
+
+# forward function call incl. defaults to rcpp method
+hestonSLVBarrierPricer <- function(
+    referenceDate, barrier, rebate, barrierType, strike, optionType,
+    maturityDate, hestonProcess, leverageFunction, tGrid=51, xGrid=401,
+    vGrid=51, dampingSteps=0, fdmScheme = "ModifiedCraigSneyd") {
+
+  hestonSLVBarrierPricer_(referenceDate, barrier, rebate, barrierType, strike, optionType,
+                          maturityDate, hestonProcess, leverageFunction, tGrid, xGrid,
+                          vGrid, dampingSteps, fdmScheme)
+}
+
+
+# forward function call incl. defaults to rcpp method
+hestonSLVDoubleNoTouchBarrierPricer <- function(
+  referenceDate, barrier_lo, barrier_hi, rebate, barrierType, strike, optionType,
+  payoffType, maturityDate, hestonProcess, leverageFunction, tGrid=51, xGrid=401,
+  vGrid=51, dampingSteps=0, fdmScheme = "ModifiedCraigSneyd") {
+
+  hestonSLVDoubleNoTouchBarrierPricer_(
+    referenceDate, barrier_lo, barrier_hi, rebate,
+    barrierType, strike, optionType, payoffType,
+    maturityDate, hestonProcess, leverageFunction, tGrid, xGrid,
+    vGrid, dampingSteps, fdmScheme)
+}
+
+
 # simple abbreviation for a constant function
 cf <- function(r) { function(t) { r } }
 
@@ -37,3 +74,5 @@ leverageFunction <- function(model, extrapolation) {
       l
   }
 }
+
+
