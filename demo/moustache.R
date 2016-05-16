@@ -43,9 +43,10 @@ slvDoubleBarrierPrices <- function(eta) {
   model <- new (HestonSLVFDMModel,
                 Sys.Date(),
                 Sys.Date() + 365,
-                lovalVolFct,
+                localVol,
                 modProcess,
                 params)
+
   initialize <- leverageFunction(model, TRUE)(0.1, process["spot"])
 
   sapply(barriers, function(barrier) {

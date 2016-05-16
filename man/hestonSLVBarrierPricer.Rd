@@ -38,7 +38,6 @@
   \item{gamma}{change in option delta for a change in the underlying}
   \item{theta}{change in option value for a change in t}
   \item{impliedVol}{implied Black-Scholes-Merton volatility of the option}
-defined}
 }
 \examples{
 process <- HestonProcess(function(t,s) {0.05}, function(t,s) {0.02},
