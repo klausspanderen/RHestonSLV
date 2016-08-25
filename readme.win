@@ -85,7 +85,7 @@ und extract files to
 
 c:\dev
 
-> set PATH=$PATH:/cygdrive/c/R/R-3.3.1/bin
+> export PATH=$PATH:/cygdrive/c/dev/R/R-3.3.1/bin
 > cd /cygdrive/c/dev
 > R CMD INSTALL RHestonSLV
 

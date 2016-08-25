@@ -1,2 +1,2 @@
-PKG_CPPFLAGS= -I"Z:\home\git\QuantLib" 
-PKG_LIBS="/usr/local/lib/libQuantLib.a"
+PKG_CPPFLAGS= -I"C:/cygwin64/usr/local/include" -I"C:/dev/boost_1_61_0" -I"Z:/home/git/QuantLib" 
+PKG_LIBS="C:/cygwin64/usr/local/lib/libQuantLib.a"
