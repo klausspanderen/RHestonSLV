@@ -15,7 +15,7 @@
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
 library(RHestonSLV)
-library(parallel)
+#library(parallel)
 
 vol <- 0.3
 localVol <- function(t, s) { vol }
@@ -56,15 +56,15 @@ impliedVol <- function(strike, maturity, model) {
 
 strikes <- seq(50, 250, 10)
 
-cl <- makeCluster(detectCores(), "FORK")
+#cl <- makeCluster(detectCores(), "FORK")
 
-vfd <-parSapply(cl=cl, strikes, function(strike) {
+vfd <-sapply(strikes, function(strike) {
       impliedVol(strike, 1.0, modelfd) })
 
-vmc <-parSapply(cl=cl, strikes, function(strike) {
+vmc <-sapply(strikes, function(strike) {
   impliedVol(strike, 1.0, modelmc) })
 
-stopCluster(cl)
+#stopCluster(cl)
 
 plot(strikes, vmc*100, main="Round-Trip Error for 1Y Maturity",
      xlab="Strike", ylab="Implied Volatility (in %)",

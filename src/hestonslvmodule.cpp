@@ -58,7 +58,6 @@
 using namespace Rcpp;
 
 using QuantLib::Real;
-using QuantLib::Size;
 using QuantLib::Time;
 using QuantLib::Handle;
 using QuantLib::Quote;
@@ -192,7 +191,7 @@ namespace {
           timeGrid));
 
     std::vector<boost::shared_ptr<std::vector<Real> > > strikes;
-    for (Size i=1; i < timeGrid->size(); ++i) {
+    for (unsigned i=1; i < timeGrid->size(); ++i) {
       const Time t = timeGrid->at(i);
       const boost::shared_ptr<QuantLib::Fdm1dMesher> fdm1dMesher
         = localVolRND->mesher(t);
@@ -201,22 +200,22 @@ namespace {
       const boost::shared_ptr<std::vector<Real> > strikeSlice(
           boost::make_shared<std::vector<Real> >(logStrikes.size()));
 
-      for (Size j=0; j < logStrikes.size(); ++j) {
+      for (unsigned j=0; j < logStrikes.size(); ++j) {
         (*strikeSlice)[j] = std::exp(logStrikes[j]);
       }
 
       strikes.push_back(strikeSlice);
     }
 
-    const Size nStrikes = strikes.front()->size();
+    const unsigned nStrikes = strikes.front()->size();
     const boost::shared_ptr<QuantLib::Matrix> localVolMatrix(
         boost::make_shared<QuantLib::Matrix>(nStrikes, timeGrid->size()-1));
-    for (Size i=1; i < timeGrid->size(); ++i) {
+    for (unsigned i=1; i < timeGrid->size(); ++i) {
       const Time t = timeGrid->at(i);
       const boost::shared_ptr<std::vector<Real> > strikeSlice
         = strikes[i-1];
 
-      for (Size j=0; j < nStrikes; ++j) {
+      for (unsigned j=0; j < nStrikes; ++j) {
         const Real s = (*strikeSlice)[j];
         (*localVolMatrix)[j][i-1] = localVol->localVol(t, s, true);
       }
@@ -248,7 +247,7 @@ namespace {
             buildHestonModel(refDate, hestonProcess),
             boost::make_shared<TimeGrid>(
               QuantLib::Actual365Fixed().yearFraction(refDate, maturityDate),
-              Size(QuantLib::Actual365Fixed().yearFraction(refDate, maturityDate)*52))
+              unsigned(QuantLib::Actual365Fixed().yearFraction(refDate, maturityDate)*52))
           )) {}
 
     Real minStrike() const { return QL_EPSILON; }
@@ -369,9 +368,9 @@ public:
       stop("Last parameter needs to be of type HestonSLVMCParams");
 
     const bool sobol = as<bool>(hestonSLVMCParams.slot("qmc"));
-    const Size timeStepsPerYear = as<Size>(hestonSLVMCParams.slot("timeStepsPerYear"));
-    const Size nBins = as<Size>(hestonSLVMCParams.slot("nBins"));
-    const Size calibrationPaths = as<Size>(hestonSLVMCParams.slot("calibrationPaths"));
+    const unsigned timeStepsPerYear = as<unsigned>(hestonSLVMCParams.slot("timeStepsPerYear"));
+    const unsigned nBins = as<unsigned>(hestonSLVMCParams.slot("nBins"));
+    const unsigned calibrationPaths = as<unsigned>(hestonSLVMCParams.slot("calibrationPaths"));
 
     model_.reset(new QuantLib::HestonSLVMCModel(
         Handle<LocalVolTermStructure>(
@@ -437,15 +436,15 @@ public:
     const FdmSchemeDesc schemeDesc = getFdmSchemeDesc(schemeDescStr);
 
     const HestonSLVFokkerPlanckFdmParams params = {
-      as<Size>(fdmParams.slot("xGrid")),
-      as<Size>(fdmParams.slot("vGrid")),
-      as<Size>(fdmParams.slot("tMaxStepsPerYear")),
-      as<Size>(fdmParams.slot("tMinStepsPerYear")),
+      as<unsigned>(fdmParams.slot("xGrid")),
+      as<unsigned>(fdmParams.slot("vGrid")),
+      as<unsigned>(fdmParams.slot("tMaxStepsPerYear")),
+      as<unsigned>(fdmParams.slot("tMinStepsPerYear")),
       as<Real>(fdmParams.slot("tStepNumberDecay")),
-      as<Size>(fdmParams.slot("predictionCorrectionSteps")),
+      as<unsigned>(fdmParams.slot("predictionCorrectionSteps")),
       as<Real>(fdmParams.slot("x0Density")),
       as<Real>(fdmParams.slot("localVolEpsProb")),
-      as<Size>(fdmParams.slot("maxIntegrationIterations")),
+      as<unsigned>(fdmParams.slot("maxIntegrationIterations")),
       as<Real>(fdmParams.slot("vLowerEps")),
       as<Real>(fdmParams.slot("vUpperEps")),
       as<Real>(fdmParams.slot("vMin")),
@@ -490,7 +489,7 @@ List hestonSLVOptionPricer(QuantLib::Date referenceDate,
                            QuantLib::Date maturityDate,
                            S4 hestonProcess,
                            Function leverageFct,
-                           Size tGrid=51, Size xGrid=201, Size vGrid=51, Size dampingSteps=0,
+                           unsigned tGrid=51, unsigned xGrid=201, unsigned vGrid=51, unsigned dampingSteps=0,
                            const std::string& fdmScheme = "ModifiedCraigSneyd") {
 
   QuantLib::VanillaOption option(
@@ -538,7 +537,7 @@ List hestonSLVForwardOptionPricer(QuantLib::Date referenceDate,
                                   QuantLib::Date resetDate,
                                   const std::string& optionType,
                                   QuantLib::Date maturityDate,
-                                  Size nSimulations,
+                                  unsigned nSimulations,
                                   S4 hestonProcessParams,
                                   Function leverageFct) {
 
@@ -562,14 +561,14 @@ List hestonSLVForwardOptionPricer(QuantLib::Date referenceDate,
   mandatoryTimes.push_back(resetTime);
   mandatoryTimes.push_back(maturityTime);
 
-  const TimeGrid grid(mandatoryTimes.begin(), mandatoryTimes.end(), Size(51*maturityTime));
-  const Size tSteps = grid.size()-1;
-  const Size resetIndex = grid.closestIndex(resetTime);
+  const TimeGrid grid(mandatoryTimes.begin(), mandatoryTimes.end(), unsigned(51*maturityTime));
+  const unsigned tSteps = grid.size()-1;
+  const unsigned resetIndex = grid.closestIndex(resetTime);
 
   typedef QuantLib::SobolBrownianBridgeRsg rsg_type;
   typedef QuantLib::MultiPathGenerator<rsg_type>::sample_type sample_type;
 
-  const Size factors = slvProcess->factors();
+  const unsigned factors = slvProcess->factors();
   const boost::shared_ptr<QuantLib::MultiPathGenerator<rsg_type> > pathGen(
     boost::make_shared<QuantLib::MultiPathGenerator<rsg_type> >(
         slvProcess, grid, rsg_type(factors, tSteps), false));
@@ -580,7 +579,7 @@ List hestonSLVForwardOptionPricer(QuantLib::Date referenceDate,
 
   QuantLib::GeneralStatistics stat;
 
-  for (Size i=0; i< nSimulations; ++i) {
+  for (unsigned i=0; i< nSimulations; ++i) {
     const sample_type& path = pathGen->next();
 
     const Real S_t1 = path.value[0][resetIndex-1];
@@ -640,7 +639,7 @@ List hestonSLVBarrierPricer(QuantLib::Date referenceDate,
                             QuantLib::Date maturityDate,
                             S4 hestonProcess,
                             Function leverageFct,
-                            Size tGrid=51, Size xGrid=201, Size vGrid=51, Size dampingSteps=0,
+                            unsigned tGrid=51, unsigned xGrid=201, unsigned vGrid=51, unsigned dampingSteps=0,
                             const std::string& fdmScheme = "ModifiedCraigSneyd") {
 
   QuantLib::BarrierOption option(
@@ -700,7 +699,7 @@ List hestonSLVDoubleNoTouchBarrierPricer(
     QuantLib::Date maturityDate,
     S4 hestonProcess,
     Function leverageFct,
-    Size tGrid=51, Size xGrid=201, Size vGrid=51, Size dampingSteps=0,
+    unsigned tGrid=51, unsigned xGrid=201, unsigned vGrid=51, unsigned dampingSteps=0,
     const std::string& fdmScheme = "ModifiedCraigSneyd") {
 
   QuantLib::DoubleBarrierOption option(

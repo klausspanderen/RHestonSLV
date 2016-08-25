@@ -15,7 +15,7 @@
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
 library(RHestonSLV)
-library(parallel)
+#library(parallel)
 library(RQuantLib)
 
 vol <- 0.3
@@ -33,16 +33,16 @@ barriers <- seq(0, 100, 5)
 slvBarrierDelta <- function(eta) {
   process <- HestonProcess(cf(0.05), cf(0.02),
                            100, 0.09, 1.0, 0.06, eta * 0.4,-0.75)
-  
+
   model <- new (HestonSLVFDMModel,
                 Sys.Date(),
                 Sys.Date() + 1095,
                 localVol,
                 process,
                 params)
-  
+
   initialize <- leverageFunction(model, TRUE)(0.1, process["spot"])
-  
+
   sapply(barriers, function(barrier) {
     hestonSLVBarrierPricer(
       Sys.Date(),
@@ -59,16 +59,16 @@ slvBarrierDelta <- function(eta) {
   })
 }
 
-cl <- makeCluster(detectCores(), "FORK")
+#cl <- makeCluster(detectCores(), "FORK")
 
-deltas <- parSapply(cl=cl, c(1.0,0.5,0.25, 0.1), function(eta) {
+deltas <- sapply(c(1.0,0.5,0.25, 0.1), function(eta) {
   slvBarrierDelta(eta)
 })
 
-stopCluster(cl)
+#stopCluster(cl)
 
 lvBarrierDelta <- sapply(barriers, function(barrier) {
-  barrierPrice <- function(underlying, barrier) { 
+  barrierPrice <- function(underlying, barrier) {
     BarrierOption(
       "downout", "put",
       underlying=underlying,
@@ -79,7 +79,7 @@ lvBarrierDelta <- sapply(barriers, function(barrier) {
       volatility=0.3,
       barrier=max(0.001, barrier))$value
   }
-  
+
   10*(barrierPrice(100.1, barrier)-barrierPrice(100.0, barrier))
 })
 
@@ -90,7 +90,7 @@ s4 <- spline(barriers, lvBarrierDelta-deltas[,4], n=100, method="natural")
 
 par(mar=c(5.1,4.6,4.1,2.1))
 
-plot(s1$x, s1$y, type='l', ,xlim=c(0,100), xlab="Barrier", 
+plot(s1$x, s1$y, type='l', ,xlim=c(0,100), xlab="Barrier",
     ylab=expression(paste('\U0394'[local], ' - \U0394'[SLV])),
     main=expression(paste('Barrier Option \U0394'[local], ' vs \U0394'[SLV])),lty=2,
     cex.main=1.4,cex.lab=1.3)

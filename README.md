@@ -4,8 +4,7 @@
 
 The RHestonSLV package makes the implementation of the Heston
 Stochastic Local Volatility model in  
-[QuantLib](https://github.com/lballabio/quantlib) visible to the R
-user. 
+[QuantLib](https://github.com/lballabio/quantlib) visible for R users. 
 
 Local Stochastic Volatility (LSV) models have become the industry standard
 for FX and equity markets. The local volatility extension of the popular Heston 

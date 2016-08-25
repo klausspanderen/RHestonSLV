@@ -15,7 +15,7 @@
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
 library(RHestonSLV)
-library(parallel)
+#library(parallel)
 
 process <- HestonProcess(cf(0.02), cf(0.01),
                          100, 0.09, 1.0, 0.06, 0.8, -0.8)
@@ -67,13 +67,13 @@ slvDoubleBarrierPrices <- function(eta) {
   })
 }
 
-cl <- makeCluster(detectCores(), "FORK")
+#cl <- makeCluster(detectCores(), "FORK")
 
-slvPrices <- parSapply(cl=cl, c(1.0, 0.75, 0.5, 0.25, 0.001), function(eta) {
+slvPrices <- sapply(c(1.0, 0.75, 0.5, 0.25, 0.001), function(eta) {
   slvDoubleBarrierPrices(eta)
 })
 
-stopCluster(cl)
+#stopCluster(cl)
 
 bsNPV <- unlist(sapply(barriers, function(barrier) {
   bsDoubleNoTouchBarrierPricer(

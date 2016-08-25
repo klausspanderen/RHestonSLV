@@ -15,7 +15,7 @@
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
 library(RHestonSLV)
-library(parallel)
+#library(parallel)
 library(RQuantLib)
 
 vol <- 0.3
@@ -59,13 +59,13 @@ slvBarrierPrices <- function(eta) {
   })
 }
 
-cl <- makeCluster(detectCores(), "FORK")
+#cl <- makeCluster(detectCores(), "FORK")
 
-prices <- parSapply(cl=cl, c(1.0,0.5,0.25, 0.1), function(eta) {
+prices <- sapply(c(1.0,0.5,0.25, 0.1), function(eta) {
   slvBarrierPrices(eta)
 })
 
-stopCluster(cl)
+#stopCluster(cl)
 
 lvBarrierPrices <- sapply(barriers, function(barrier) {
   BarrierOption(

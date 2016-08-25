@@ -15,7 +15,7 @@
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
 library(RHestonSLV)
-library(parallel)
+#library(parallel)
 
 vol <- 0.3
 localVol <- function(t, s) { vol }
@@ -48,13 +48,13 @@ impliedVols <- function(eta) {
   })
 }
 
-cl <- makeCluster(detectCores(), "FORK")
+#cl <- makeCluster(detectCores(), "FORK")
 
-vols <- parSapply(cl=cl, c(1.0, 0.5, 0.25), function(eta) {
+vols <- sapply(c(1.0, 0.5, 0.25), function(eta) {
   impliedVols(eta)
 })
 
-stopCluster(cl)
+#stopCluster(cl)
 
 iv100 <- vols[,1]*100
 iv050 <- vols[,2]*100
