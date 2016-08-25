@@ -1,0 +1,2 @@
+PKG_CPPFLAGS= -I"Z:\home\git\QuantLib" 
+PKG_LIBS="/usr/local/lib/libQuantLib.a"

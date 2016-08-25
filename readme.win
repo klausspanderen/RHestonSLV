@@ -1,0 +1,93 @@
+A precompiled version for Windows x64 
+of the RHestonSLV package is available under
+
+http://hpc-quantlib.de/src/RHestonSLV_Win_x64.zip
+
+----------------------------------------------------------------------------
+
+
+Manual build and installation for Windows x64
+
+
+If you decide to use different directories please don't 
+forget to adjust RHestonSLV/src/Makevars.win accordingly
+
+
+1. Install R 3.3.1
+
+run https://cran.r-project.org/bin/windows/base/R-3.3.1-win.exe
+
+and intall under C:\dev\R
+
+
+2. Install Rtools 3.3
+
+run https://cran.r-project.org/bin/windows/Rtools/Rtools33.exe
+
+and install in C:\Rtools
+
+
+3. install cygwin
+
+run installer https://www.cygwin.com/setup-x86_64.exe 
+
+and install under c:\dev\cygwin64
+
+Do not forget to include the developer tools (incl. automake, gcc, g++, etc)
+
+
+4. download and extract QuantLib
+
+get source from 
+
+https://sourceforge.net/projects/quantlib/files/latest/download?source=files
+
+and extract files to 
+
+c:\dev\QuantLib-1.8
+
+
+5. download and extract boost
+
+get source from 
+
+https://sourceforge.net/projects/boost/files/boost/1.61.0/
+
+and extract files to
+
+c:\dev\boost_1_61_1
+
+
+6. Compile QuantLib
+
+open cygwin sheel 
+
+> cd /cygrive/c/dev/QuantLib-1.8
+> autogen.sh
+> export CXX="/cygdrive/c/Rtools/mingw_64/bin/x86_64-w64-mingw32-g++.exe -IC:/dev/boost_1_61_0"
+> export CXXFLAGS="-O2"
+> ./configure --disable-shared
+> cd ql
+> make -j 8 install
+
+
+7. download and compile RHestonSLV
+
+7a. install Rcpp
+
+> echo "install.packages(\"Rcpp\", repos=\"https://cran.r-project.org\")" | R --vanilla
+
+7b. download RHestonSLV from 
+
+https://github.com/klausspanderen/RHestonSLV/archive/master.zip
+
+und extract files to 
+
+c:\dev
+
+> set PATH=$PATH:/cygdrive/c/R/R-3.3.1/bin
+> cd /cygdrive/c/dev
+> R CMD INSTALL RHestonSLV
+
+
+

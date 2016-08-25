@@ -1,0 +1,31 @@
+Build and installation on Linux
+
+Prerequisite
+R, QuantLib and boost are installed in standard directories.
+
+
+1. install Rcpp
+
+echo "install.packages(\"Rcpp\", repos=\"https://cran.r-project.org\")" | R --vanilla
+
+
+2. download and build RHestonSLV  
+
+https://github.com/klausspanderen/RHestonSLV/archive/master.zip
+
+und extract files.
+
+
+2a. Open RStudio
+
+File -> Open Project -> open RHestonSLV.Rproj 
+
+Build -> Build and Reload
+
+
+2b. or alternatively run
+
+R CMD INSTALL RHestonSLV
+
+
+done
