@@ -45,7 +45,7 @@
 #include <ql/experimental/processes/hestonslvprocess.hpp>
 #include <ql/experimental/finitedifferences/fdhestondoublebarrierengine.hpp>
 #include <ql/experimental/barrieroption/analyticdoublebarrierengine.hpp>
-#include <ql/experimental/finitedifferences/localvolrndcalculator.hpp>
+#include <ql/methods/finitedifferences/utilities/localvolrndcalculator.hpp>
 #include <ql/experimental/barrieroption/analyticdoublebarrierbinaryengine.hpp>
 
 #include <boost/scoped_ptr.hpp>
@@ -441,6 +441,7 @@ public:
       as<unsigned>(fdmParams.slot("tMaxStepsPerYear")),
       as<unsigned>(fdmParams.slot("tMinStepsPerYear")),
       as<Real>(fdmParams.slot("tStepNumberDecay")),
+      as<unsigned>(fdmParams.slot("nRannacherTimeSteps")),
       as<unsigned>(fdmParams.slot("predictionCorrectionSteps")),
       as<Real>(fdmParams.slot("x0Density")),
       as<Real>(fdmParams.slot("localVolEpsProb")),
