@@ -14,9 +14,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with RHestonSLV.  If not, see <http:#www.gnu.org/licenses/>.
 
+library(RQuantLib)
 library(RHestonSLV)
 #library(parallel)
-library(RQuantLib)
 
 vol <- 0.3
 localVol <- function(t, s) { vol }
