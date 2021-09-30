@@ -16,7 +16,7 @@
 
 library(RQuantLib)
 library(RHestonSLV)
-#library(parallel)
+library(parallel)
 
 vol <- 0.3
 localVol <- function(t, s) { vol }
@@ -57,15 +57,15 @@ impliedVol <- function(strike, maturity, model) {
 
 strikes <- seq(50, 250, 10)
 
-#cl <- makeCluster(detectCores(), "FORK")
+cl <- makeCluster(detectCores(), "FORK")
 
-vfd <-sapply(strikes, function(strike) {
+vfd <-parSapply(cl, strikes, function(strike) {
       impliedVol(strike, 1.0, modelfd) })
 
-vmc <-sapply(strikes, function(strike) {
+vmc <-parSapply(cl, strikes, function(strike) {
   impliedVol(strike, 1.0, modelmc) })
 
-#stopCluster(cl)
+stopCluster(cl)
 
 plot(strikes, vmc*100, main="Round-Trip Error for 1Y Maturity",
      xlab="Strike", ylab="Implied Volatility (in %)",

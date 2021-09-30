@@ -16,7 +16,7 @@
 
 library(RQuantLib)
 library(RHestonSLV)
-#library(parallel)
+library(parallel)
 
 vol <- 0.3
 localVol <- function(t, s) { vol }
@@ -49,13 +49,13 @@ impliedVols <- function(eta) {
   })
 }
 
-#cl <- makeCluster(detectCores(), "FORK")
+cl <- makeCluster(detectCores(), "FORK")
 
-vols <- sapply(c(1.0, 0.5, 0.25), function(eta) {
+vols <- parSapply(cl, c(1.0, 0.5, 0.25), function(eta) {
   impliedVols(eta)
 })
 
-#stopCluster(cl)
+stopCluster(cl)
 
 iv100 <- vols[,1]*100
 iv050 <- vols[,2]*100

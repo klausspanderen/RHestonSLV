@@ -16,7 +16,7 @@
 
 library(RQuantLib)
 library(RHestonSLV)
-#library(parallel)
+library(parallel)
 
 vol <- 0.3
 localVol <- function(t, s) { vol }
@@ -59,13 +59,13 @@ slvBarrierDelta <- function(eta) {
   })
 }
 
-#cl <- makeCluster(detectCores(), "FORK")
+cl <- makeCluster(detectCores(), "FORK")
 
-deltas <- sapply(c(1.0,0.5,0.25, 0.1), function(eta) {
+deltas <- parSapply(cl, c(1.0,0.5,0.25, 0.1), function(eta) {
   slvBarrierDelta(eta)
 })
 
-#stopCluster(cl)
+stopCluster(cl)
 
 lvBarrierDelta <- sapply(barriers, function(barrier) {
   barrierPrice <- function(underlying, barrier) {
