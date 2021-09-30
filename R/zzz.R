@@ -24,7 +24,7 @@
   ## else let's test the QuantLib version, and then the intraday capability
   qlver <- getQuantLibVersion()
   if (compareVersion(qlver, "1.12") < 0) {
-    packageStartupMessage("QuantLib version ", qlver, " detected which is older than 1.8.")
+    packageStartupMessage("QuantLib version ", qlver, " detected which is older than 1.12.")
     packageStartupMessage("Heston Stochastic Local Volatility models are not supported.")
   }
   else {
